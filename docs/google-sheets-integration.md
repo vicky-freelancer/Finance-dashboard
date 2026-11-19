@@ -23,9 +23,7 @@ Deployment as "Me" means all users of this dashboard share the sheet and the dep
 
 Header names are matched by column name, so columns can be reordered. Rows without an `id` are ignored. Money columns are integer paise; blank payment and receipt values remain blank. The script creates missing tabs and headers, freezes the header row and formats text columns as plain text. It never deletes unrecognized tabs or content.
 
-## Vendor catalog import
-
-`apps-script/VendorCatalog.gs` contains the 180 vendor names and categories supplied for this project. Run `importVendorCatalog()` once in Apps Script after connecting the spreadsheet. It creates IDs, collapses repeated whitespace in names, skips vendors whose names already exist (case-insensitive), and leaves existing categories untouched. Re-running it adds nothing. The two differently-cased entries for `SRI BALAJI TRADERS` are consolidated into one record.
+Vendors are entered directly in the `Vendors` tab or through the dashboard. Keep names unique, since the script rejects duplicate vendor names regardless of case.
 
 ## API
 

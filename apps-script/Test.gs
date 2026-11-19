@@ -65,25 +65,6 @@ function runCrudTests() {
   return checks.join("\n");
 }
 
-function runVendorImportTest() {
-  const previousOverride = OVERRIDE_SPREADSHEET_ID;
-  const testSheet = SpreadsheetApp.create("Dashboard AC vendor import test " + new Date().toISOString());
-  OVERRIDE_SPREADSHEET_ID = testSheet.getId();
-  try {
-    const first = importVendorCatalog();
-    expect(first.inserted === VENDOR_CATALOG.length, "import inserts every catalog entry");
-    const second = importVendorCatalog();
-    expect(second.inserted === 0 && second.existing === VENDOR_CATALOG.length, "re-running the import skips existing vendors");
-    const vendors = read().data.vendors;
-    expect(vendors.length === VENDOR_CATALOG.length, "the catalog has no duplicate names");
-    expect(vendors.some(function (vendor) { return vendor.name === "AAI MATHAJI ELECTRICALS & HARDWARE" && vendor.category === "ELECTRICALS"; }), "name and category are imported");
-    return "Vendor catalog import test passed: " + vendors.length + " vendors.";
-  } finally {
-    OVERRIDE_SPREADSHEET_ID = previousOverride;
-    DriveApp.getFileById(testSheet.getId()).setTrashed(true);
-  }
-}
-
 function response(payload) {
   return JSON.parse(doPost({ postData: { contents: JSON.stringify(payload) }, parameter: {} }).getContent());
 }

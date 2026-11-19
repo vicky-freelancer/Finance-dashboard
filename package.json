@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "typecheck": "tsc -b --pretty false",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:sheets": "node tests/sheets-crud.test.mjs",
+    "test": "node tests/sheets-crud.test.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.0",

@@ -1,4 +1,4 @@
-# Frontend plan
+﻿# Frontend plan
 
 Status: Phase 1 proposal, awaiting approval. The workbook is historical reference data; its totals must not be presented as current live balances. The client will update live records later. Backend choice and real-data storage remain undecided.
 
@@ -16,6 +16,6 @@ Status: Phase 1 proposal, awaiting approval. The workbook is historical referenc
 
 Use the user's `SKILLs designer.md` as visual design inspiration where relevant: a cohesive, intentional visual direction, restrained accents, clear hierarchy and polished mobile experience. Its cinematic marketing-site workflow, paid external tools and deployment steps do not govern this accountant dashboard, whose explicitly requested stack and approval gates take precedence. Use deep navy navigation, white and light-gray surfaces, electric blue actions, meaningful green, amber and red, clear typography and subtle motion. Prioritize mobile cards, bottom navigation, readable amounts, searchable selectors, touch targets, responsive forms, sticky actions and filter drawers; provide a collapsible desktop sidebar and tables.
 
-Use React, Vite, TypeScript, Tailwind CSS, shadcn/ui, Lucide React, React Router, Recharts, React Hook Form, Zod and date-fns with free open-source dependencies. Separate typed models, precise financial calculations and `src/services/accountingService.ts` from UI. Use clearly labelled mock data unless local workbook use is approved. No database, live connection, persistent real-data browser storage or deployment is authorized by this phase. Format Indian currency and dates as DD/MM/YYYY.
+Use React, Vite, TypeScript, Tailwind CSS, shadcn/ui, Lucide React, React Router, Recharts, React Hook Form, Zod and date-fns with free open-source dependencies. Separate typed models, precise financial calculations and `src/services/accountingService.ts` from UI. The accounting service reads and writes Google Sheets through an Apps Script Web App; the sheet is the only source of records. Format Indian currency and dates as DD/MM/YYYY.
 
-After approval, test calculations, source reconciliation, missing and duplicate data, filters, forms, navigation and representative mobile and desktop widths; run TypeScript checks and a production build. No application implementation or tests have been performed yet.
+After approval, test calculations, source reconciliation, missing and duplicate data, filters, forms, navigation and representative mobile and desktop widths; run TypeScript checks and a production build. Verify with `npm run typecheck`, `npm run build`, the in-Script `runCrudTests` and `npm run test:sheets`.

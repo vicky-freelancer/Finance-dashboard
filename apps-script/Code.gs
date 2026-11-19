@@ -1,4 +1,4 @@
-const SPREADSHEET_ID = "PASTE_SPREADSHEET_ID_HERE";
+const SPREADSHEET_ID = "1nUDs_Bwzwj-0yg2QiBN-k4X3h1SoTUKFebxSkZJP9vk";
 var OVERRIDE_SPREADSHEET_ID = null;
 
 const NUMERIC_FIELDS = ["invoiceValue", "paidAmount", "value", "amountReceived", "balance"];
@@ -117,7 +117,7 @@ function isSpreadsheetConfigured() {
 
 function ensureSetup() {
   if (!isSpreadsheetConfigured()) {
-    throw new Error("Open apps-script/Code.gs, replace PASTE_SPREADSHEET_ID_HERE with your spreadsheet ID, then redeploy the Web App.");
+    throw new Error("Set a valid SPREADSHEET_ID in apps-script/Code.gs, then redeploy the Web App.");
   }
   const ss = SpreadsheetApp.openById(getSpreadsheetId());
   Object.keys(TABLES).forEach(function (entity) {

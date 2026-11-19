@@ -6,7 +6,7 @@ React/Vite finance dashboard backed by a Google Sheet through a Google Apps Scri
 
 1. Create a Google Spreadsheet with four tabs named `Vendors`, `Invoices`, `Sites` and `PurchaseOrders`, or let the script create them on first run. Do not point it at the historical workbook.
 2. Open Apps Script (`Extensions → Apps Script`) from that spreadsheet and copy `apps-script/Code.gs`, `apps-script/Test.gs` and `apps-script/appsscript.json` into the project.
-3. In `Code.gs`, replace `PASTE_SPREADSHEET_ID_HERE` with the spreadsheet ID from its URL.
+3. `Code.gs` already points at the project spreadsheet. If you switch spreadsheets, replace the value of `SPREADSHEET_ID` with the ID from its URL.
 4. Deploy → New deployment → Web app. Set **Execute as: Me** and **Who has access: Anyone**, then authorize and copy the Web App URL.
 5. Copy `.env.example` to `.env` and set `VITE_SHEETS_WEB_APP_URL` to that URL. Restart the dev server after changing it.
 6. Copy `apps-script/VendorCatalog.gs` into the Apps Script project and run `importVendorCatalog()` once. It adds 180 vendors with their categories to the `Vendors` tab, skips names already present, and is safe to re-run. Reload the dashboard to see them.

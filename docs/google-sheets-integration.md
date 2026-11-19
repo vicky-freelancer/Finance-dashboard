@@ -6,7 +6,7 @@ The dashboard reads and writes Google Sheets through the Apps Script Web App in 
 
 1. Create a dedicated spreadsheet. Do not use the historical workbook as the live database.
 2. Copy `apps-script/Code.gs`, `apps-script/Test.gs` and `apps-script/appsscript.json` into the spreadsheet's Apps Script project.
-3. Replace `PASTE_SPREADSHEET_ID_HERE` in `Code.gs` with the spreadsheet ID.
+3. `Code.gs` already contains the project spreadsheet ID. Replace `SPREADSHEET_ID` if you use a different spreadsheet.
 4. Deploy as a Web App with **Execute as: Me** and **Who has access: Anyone**. Authorize the script for the spreadsheet.
 5. Set `VITE_SHEETS_WEB_APP_URL` in `.env` to the Web App URL. Optionally set `VITE_SHEETS_APP_TOKEN` together with an `APP_TOKEN` script property.
 

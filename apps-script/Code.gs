@@ -184,11 +184,11 @@ function readTable(ss, entity) {
   const rows = [];
   for (let r = 1; r < values.length; r += 1) {
     const raw = values[r];
-    const id = cell(raw, meta.index.id);
-    if (!id) continue;
+    if (raw.every(function (value) { return value === "" || value === null || value === undefined; })) continue;
+    const id = cell(raw, meta.index.id) || ("row-" + (r + 1));
     const record = {};
     table.headers.forEach(function (header) {
-      record[header] = normalizeValue(ss, header, cell(raw, meta.index[header]));
+      record[header] = header === "id" ? String(id) : normalizeValue(ss, header, cell(raw, meta.index[header]));
     });
     rows.push(record);
   }
@@ -199,12 +199,22 @@ function cell(row, index) {
   return index < 0 ? "" : row[index];
 }
 
+function legacyRowNumber(id) {
+  const text = String(id || "");
+  if (text.indexOf("row-") !== 0) return -1;
+  const row = Number(text.slice(4));
+  return Number.isInteger(row) && row > 1 ? row : -1;
+}
+
 function normalizeValue(ss, header, value) {
   if (value instanceof Date) {
     return Utilities.formatDate(value, ss.getSpreadsheetTimeZone(), "yyyy-MM-dd");
   }
   if (NUMERIC_FIELDS.indexOf(header) >= 0) {
-    return value === "" || value === null || value === undefined ? null : Number(value);
+    if (value === "" || value === null || value === undefined) return null;
+    if (typeof value === "number") return value;
+    const parsed = Number(String(value).replace(/[^0-9.\-]/g, ""));
+    return Number.isNaN(parsed) ? null : parsed;
   }
   const text = value === null || value === undefined ? "" : String(value).trim();
   return NULLABLE_TEXT_FIELDS.indexOf(header) >= 0 ? text || null : text;
@@ -279,11 +289,13 @@ function writeRecord(ss, entity, record) {
   const table = TABLES[entity];
   const meta = headerIndex(ss, entity);
   const values = meta.sheet.getDataRange().getValues();
-  let rowNumber = -1;
-  for (let r = 1; r < values.length; r += 1) {
-    if (String(cell(values[r], meta.index.id)) === record.id) {
-      rowNumber = r + 1;
-      break;
+  let rowNumber = legacyRowNumber(record.id);
+  if (rowNumber < 0) {
+    for (let r = 1; r < values.length; r += 1) {
+      if (String(cell(values[r], meta.index.id)) === record.id) {
+        rowNumber = r + 1;
+        break;
+      }
     }
   }
   const row = table.headers.map(function (header) { return serializeValue(header, record[header]); });
@@ -296,6 +308,11 @@ function writeRecord(ss, entity, record) {
 
 function deleteRecord(ss, entity, id) {
   const meta = headerIndex(ss, entity);
+  const legacyRow = legacyRowNumber(id);
+  if (legacyRow > 0) {
+    meta.sheet.deleteRow(legacyRow);
+    return;
+  }
   const values = meta.sheet.getDataRange().getValues();
   for (let r = values.length - 1; r >= 1; r -= 1) {
     if (String(cell(values[r], meta.index.id)) === id) {
